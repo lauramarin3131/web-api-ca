@@ -7,7 +7,7 @@ import './db';
 // other imports
 import cors from 'cors';
 import moviesRouter from './api/movies';   
-
+import reviewsRouter from "./api/reviews/index.js";
 
 dotenv.config();
 const errHandler = (err, req, res, next) => {
@@ -27,10 +27,17 @@ const port = process.env.PORT;
 
 app.use(express.json());
 app.use('/api/movies', moviesRouter); 
-
+app.use("/api/reviews", reviewsRouter);
 app.use('/api/users', usersRouter);
 app.use(errHandler);
 
 app.listen(port, () => {
   console.info(`Server running at ${port}`);
+});
+
+app.use((err, req, res, next) => {
+  res.status(401).json({
+    success: false,
+    msg: err.message || "Authentication failed",
+  });
 });

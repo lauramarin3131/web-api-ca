@@ -21,7 +21,10 @@ const authenticate = async (request, response, next) => {
         request.user = user; 
         next();
     } catch(err) {
-        next(new Error(`Verification Failed: ${err.message}`));
+         return response.status(401).json({
+            success: false,
+            msg: `Verification Failed: ${err.message}`,
+        });
     }
 };
 
