@@ -18,7 +18,10 @@ import NowPlayingMoviesPage from "./pages/NowPlayingMoviesPage";
 import ActorDetailsPage from "./pages/ActorDetailsPage.jsx";
 import MustWatchPage from "./pages/mustWatchPage";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+import { AuthProvider } from "./contexts/AuthContext";
 
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -55,12 +58,16 @@ const theme = createTheme({
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-       <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
         <CssBaseline /> 
           <BrowserRouter>
             <SiteHeader />
             <MoviesContextProvider>
               <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+
                 <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
                 <Route path="/reviews/:id" element={ <MovieReviewPage /> } />
                 <Route path="/actors/:id" element={<ActorDetailsPage />} />
@@ -71,13 +78,14 @@ const App = () => {
                 <Route path="/movies/top-rated" element={<TopRatedMoviesPage />} />
                 <Route path="/movies/now_playing" element={<NowPlayingMoviesPage />} />
                 <Route path="/movies/must-watch" element={<MustWatchPage />} />
-
+                
                 <Route path="/" element={<HomePage />} />
                 <Route path="*" element={ <Navigate to="/" /> } />
               </Routes>
             </MoviesContextProvider>
           </BrowserRouter>
         </ThemeProvider>
+      </AuthProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
