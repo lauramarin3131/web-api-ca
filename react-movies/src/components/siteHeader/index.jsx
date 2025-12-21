@@ -11,6 +11,8 @@ import { useNavigate } from "react-router";
 import { styled } from '@mui/material/styles';
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useAuth } from "../../contexts/AuthContext";
+import { Link } from "react-router";
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
@@ -22,6 +24,7 @@ const SiteHeader = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -102,6 +105,28 @@ const SiteHeader = () => {
                 ))}
               </>
             )}
+            {/* AUTH ACTIONS */}
+              {!user && (
+                <>
+                  <Button color="inherit" component={Link} to="/login">
+                    Login
+                  </Button>
+                  <Button color="inherit" component={Link} to="/signup">
+                    Signup
+                  </Button>
+                </>
+              )}
+
+              {user && (
+                <>
+                  <Typography variant="body1" sx={{ mx: 2 }}>
+                    Hi {user.username}
+                  </Typography>
+                  <Button color="inherit" onClick={logout}>
+                    Logout
+                  </Button>
+                </>
+              )}
         </Toolbar>
       </AppBar>
       <Offset />
